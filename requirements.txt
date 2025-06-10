@@ -1,30 +1,11 @@
-# Core MCP dependencies
-mcp>=1.0.0
-
-# IQA metrics
-pyiqa>=0.1.13
-
-# Image processing dependencies
-Pillow>=10.0.0
-numpy>=1.24.0
-
-# Deep learning dependencies
-torch>=2.0.0
-torchvision>=0.15.0
-
-# Configuration and utilities
+mcp-python>=0.1.0
+pyiqa>=0.1.0
+pillow>=9.0.0
+torch>=1.8.0
 pydantic>=2.0.0
-click>=8.0.0
+typing-extensions>=4.0.0
 
-# Development and testing
+# Testing dependencies
 pytest>=7.0.0
 pytest-asyncio>=0.21.0
-pytest-cov>=4.0.0
-black>=23.0.0
-isort>=5.12.0
-mypy>=1.5.0
-pre-commit>=3.0.0
-
-# Documentation
-sphinx>=7.0.0
-sphinx-rtd-theme>=1.3.0
+pytest-cov>=4.1.0

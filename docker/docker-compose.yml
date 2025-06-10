@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  iqa-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "50051:50051"
+    volumes:
+      - ../data:/app/data
+    environment:
+      - LOG_LEVEL=INFO
+      - MODEL_PATH=/app/data/models
+      - CUDA_VISIBLE_DEVICES=0  # Enable GPU support if available
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]  # Enable GPU support
+    restart: unless-stopped
+
+  # Optional monitoring service
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - iqa-server

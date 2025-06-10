@@ -6,13 +6,9 @@ This server provides access to Image Quality Assessment (IQA) model information
 from the IQA-PyTorch library through the Model Context Protocol.
 """
 
-import json
-from typing import Dict, List, Any, Optional
-from mcp import ClientSession, StdioServerParameters
-from mcp.server import Server
-from mcp.server.models import InitializationOptions
+import asyncio
 import mcp.server.stdio
-import mcp.types as types
+from iqa_server import IQAServer
 
 # IQA Model Database
 IQA_MODELS = {
@@ -519,21 +515,10 @@ except:
         raise ValueError(f"Unknown tool: {name}")
 
 async def main():
-    # Run the server using stdin/stdout streams
+    """Run the IQA MCP server."""
+    server = IQAServer()
     async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
-        await server.run(
-            read_stream,
-            write_stream,
-            InitializationOptions(
-                server_name="iqa-pytorch",
-                server_version="0.1.0",
-                capabilities=server.get_capabilities(
-                    notification_options=None,
-                    experimental_capabilities={},
-                ),
-            ),
-        )
+        await server.run(read_stream, write_stream)
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
